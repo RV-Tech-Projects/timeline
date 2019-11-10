@@ -57,6 +57,19 @@ export class HelperCanvas {
     this.canvasContext.strokeRect(x, y, width, height);
   }
 
+  drawRoundedRect(
+    x: number, y: number, width: number, height: number, radius: number, color: string
+  ) {
+    this.canvasContext.beginPath();
+    this.canvasContext.strokeStyle = color;
+    this.canvasContext.moveTo(x + width - radius, y + height);
+    this.canvasContext.arcTo(x, y + height, x, y, radius);
+    this.canvasContext.arcTo(x, y, x + width, y, radius);
+    this.canvasContext.arcTo(x + width, y, x + width, y + height, radius);
+    this.canvasContext.arcTo(x + width, y + height, x, y + height, radius);
+    this.canvasContext.stroke();
+  }
+
   drawLine(x1: number, y1: number, x2: number, y2: number, lineWidth: number, color: string) {
     this.canvasContext.save();
     this.canvasContext.beginPath();

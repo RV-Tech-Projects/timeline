@@ -15,9 +15,13 @@
   margin-bottom: -4px;
 }
 
-.buttons {
+.buttons,
+.places-photos,
+.places-delete {
   position: absolute;
   z-index: 1;
+
+  width: 100%;
 }
 
 .edit-delete {
@@ -30,4 +34,36 @@
 
 .edit-delete:hover {
   cursor: pointer;
+}
+
+.places-delete,
+.places-photos {
+  /*background-color: rgba(255, 255, 0, 0.3);*/
+  margin-top: 150px;
+}
+
+.all-buttons {
+  margin-top: 25px;
+}
+
+.places-delete-holder{
+  margin-left: 500px;
+  margin-bottom: 67px;
+}
+
+.places-delete-holder:hover {
+  cursor: pointer;
+}
+
+.places-photos {
+/*background-color: rgba(255, 255, 0, 0.3);*/
+}
+
+.all-images {
+  margin-top: 10px;
+  margin-left: 85px;
+}
+
+.places-image-holder {
+  margin-bottom: 24px;
 }

@@ -14,6 +14,7 @@ export interface IStop {
 })
 export class TripService {
   trip = new BehaviorSubject<IStop[]>([]);
+  display = true;
 
   constructor() {
     let count = 1;
@@ -41,6 +42,7 @@ export class TripService {
 
   removeStop(id: string) {
     const tempTrip: IStop[] = [];
+    this.display = false;
 
     this.trip.pipe(take(1)).subscribe(trip => {
       trip.forEach(stop => {
@@ -50,10 +52,12 @@ export class TripService {
       });
 
       this.trip.next(tempTrip);
+      this.display = true;
     });
   }
 
   editStop(stopToBeEdited: IStop) {
+    this.display = false;
     this.trip.pipe(take(1)).subscribe(trip => {
       trip.forEach(stop => {
         if (stop.id === stopToBeEdited.id) {
@@ -62,6 +66,26 @@ export class TripService {
       });
 
       this.trip.next(trip);
+      this.display = true;
     });
+  }
+
+  deletePlaceFromStop(stopId: string, index: number) {
+    this.display = false;
+    this.trip.pipe(take(1)).subscribe(trip => {
+      trip.forEach(stop => {
+        if (stop.id === stopId) {
+          stop.places.splice(index, 1);
+        }
+      });
+
+      this.trip.next(trip);
+      this.display = true;
+    });
+  }
+
+  getRandomUrl(): string {
+    // return 'http://lorempixel.com/30/30/city/?id=' + Math.random();
+    return 'http://lorempixel.com/56/57/city/';
   }
 }

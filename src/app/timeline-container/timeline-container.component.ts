@@ -15,7 +15,6 @@ export class TimelineContainerComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.tripService.trip.subscribe(trip => {
       this.stops = trip;
-      console.log('reached');
       this.changeDetectorRef.detectChanges();
     });
   }

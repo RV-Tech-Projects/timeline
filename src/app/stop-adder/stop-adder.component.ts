@@ -45,6 +45,8 @@ export class StopAdderComponent implements OnInit {
 
   onAddPlaceSubmit() {
     if (this.addPlace.valid) {
+      this.tripService.display = false;
+
       const newStop = {
         name: 'Some place',
         type: ['hotel', 'attraction'][Math.random() > 0.5 ? 1 : 0]
@@ -55,6 +57,8 @@ export class StopAdderComponent implements OnInit {
       }
       this.addPlace.value.stop.places.push(newStop);
       this.tripService.trip.next([...this.trip]);
+
+      this.tripService.display = true;
 
       this.tripService.trip.pipe(take(1)).subscribe((trip: IStop[]) => {
         console.log(trip);

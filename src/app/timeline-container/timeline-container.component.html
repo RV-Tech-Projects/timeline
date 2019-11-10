@@ -1,5 +1,11 @@
 <div class="body">
-  <span *ngFor="let stop of stops">
-    <app-stop [stop]="stop"></app-stop>
+  <span
+    *ngIf="tripService.display"
+  >
+    <span
+      *ngFor="let stop of stops"
+    >
+      <app-stop [stop]="stop"></app-stop>
+    </span>
   </span>
 </div>

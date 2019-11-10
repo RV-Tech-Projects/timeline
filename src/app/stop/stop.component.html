@@ -11,12 +11,61 @@
       (click)="editOrRemoveStop()"
     >
       <i
-        class="fa fa-2x"
+        class="fa fa-lg"
         [ngClass]="{
           'fa-pencil': stopType !== 'stop',
           'fa-trash': stopType === 'stop'
         }"
       ></i>
+    </div>
+  </div>
+
+  <div
+    class="places-photos"
+    [ngStyle]="{
+      height: '' + places.length * 85 + 'px'
+    }"
+  >
+    <div
+      class="all-images"
+    >
+      <div
+        *ngFor="let place of places; let i = index"
+        class="places-image-holder"
+      >
+        <!--    Can use place.id instead of index-->
+        <img
+          [src]="tripService.getRandomUrl()"
+          alt="image can't be loaded"
+        >
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="places-delete"
+    [ngStyle]="{
+      height: '' + places.length * 85 + 'px'
+    }"
+  >
+    <div class="all-buttons">
+      <div
+        *ngFor="let place of places; let i = index"
+        class="places-delete-holder"
+        [ngStyle]="{
+          color: ( (buttons.deleteHover && stopType === 'stop')
+                  || buttons.deletePlaces[i]) ?
+                  'rgb(157, 0, 0)' : currentTheme.color
+        }"
+        (mouseover)="buttons.deletePlaces[i]=true"
+        (mouseleave)="buttons.deletePlaces[i]=false"
+      >
+        <!--    Can use place.id instead of index-->
+        <i
+          class="fa fa-trash fa-lg"
+          (click)="deletePlace(i)"
+        ></i>
+      </div>
     </div>
   </div>
 

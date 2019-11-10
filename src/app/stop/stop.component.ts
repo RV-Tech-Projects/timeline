@@ -27,8 +27,10 @@ export class StopComponent implements OnInit, AfterViewInit {
   canvasElement: HTMLCanvasElement;
   stopLabelYCoordinate = 45;
   placesHeightOffset = 45;
+  places: { name: string, type: string }[];
   buttons = {
     deleteHover: false,
+    deletePlaces: []
   };
   iconsBaseUrl = 'assets/icons/';
   mapped: {
@@ -40,10 +42,10 @@ export class StopComponent implements OnInit, AfterViewInit {
     name: 'dark',
     backgroundColor: 'rgb(0, 0, 0)',
     color: 'rgb(255, 255, 255)',
-    stopSeparatorColor: 'rgb(255, 0, 0)',
+    stopSeparatorColor: 'rgb(0, 0, 0)',
     dateColor: 'rgb(127, 127, 127)',
     sourceAndDestinationDateBackgroundColor: 'rgb(25, 25, 25)',
-    sourceAndDestinationDateBorderColor: 'rgb(255, 0, 0)',
+    sourceAndDestinationDateBorderColor: 'rgb(20, 20, 20)',
     placesMarkerColor: 'light'
   };
 
@@ -70,6 +72,12 @@ export class StopComponent implements OnInit, AfterViewInit {
     if (this.stop.type) {
       this.stopType = this.stop.type;
     }
+
+    this.places = this.stop.places ? this.stop.places : [];
+
+    this.places.forEach((item, index) => {
+      this.buttons.deletePlaces.push(false);
+    });
   }
 
   editOrRemoveStop() {
@@ -77,8 +85,11 @@ export class StopComponent implements OnInit, AfterViewInit {
       this.tripService.removeStop(this.stop.id);
     } else {
       this.tripService.editStop(this.stop);
-      this.startRendering();
     }
+  }
+
+  deletePlace(index: number) {
+    this.tripService.deletePlaceFromStop(this.stop.id, index);
   }
 
   ngAfterViewInit() {
@@ -122,12 +133,13 @@ export class StopComponent implements OnInit, AfterViewInit {
   }
 
   writeStopLabel() {
-    let outlineRectWidth = 100;
+    const textWidth =
+      this.helperCanvas.canvasContext.measureText(this.stop.name).width;
+    const currentFontSize =
+      +this.helperCanvas.canvasContext.font.split('px')[0];
     let fontSize = 11;
 
-    if (this.stop.name.length > 12) {
-      outlineRectWidth = 125;
-    }
+    const outlineRectWidth = ((fontSize * textWidth) / currentFontSize) + 30;
 
     if (this.stopType === 'stop') {
       fontSize = 10;
@@ -137,14 +149,19 @@ export class StopComponent implements OnInit, AfterViewInit {
       this.stopLabelYCoordinate = (this.mapped.height / 2);
     }
 
-    this.helperCanvas.drawOutlineRect(
-      32, this.stopLabelYCoordinate - 10,
-      outlineRectWidth, 20, this.currentTheme.color
-    );
-
     this.helperCanvas.drawFilledRect(
       32, this.stopLabelYCoordinate - 10,
       outlineRectWidth, 20, this.currentTheme.backgroundColor
+    );
+
+    // this.helperCanvas.drawOutlineRect(
+    //   32, this.stopLabelYCoordinate - 10,
+    //   outlineRectWidth, 20, this.currentTheme.color
+    // );
+
+    this.helperCanvas.drawRoundedRect(
+      32, this.stopLabelYCoordinate - 10,
+      outlineRectWidth, 20, 10, this.currentTheme.color
     );
 
     if (this.stopType === 'stop') {
@@ -203,6 +220,16 @@ export class StopComponent implements OnInit, AfterViewInit {
       this.helperCanvas.drawDashedLine(
         20, this.stopLabelYCoordinate, 20,
         this.mapped.height, 1, 'grey',
+        dashParams
+      );
+    }
+
+    // Line connecting the markers of the places
+    if (this.stopType === 'destination' &&
+        this.places.length > 0) {
+      this.helperCanvas.drawDashedLine(
+        20, this.stopLabelYCoordinate, 20,
+        this.mapped.height - 28, 1, 'grey',
         dashParams
       );
     }
@@ -271,7 +298,6 @@ export class StopComponent implements OnInit, AfterViewInit {
         'bold 8px Courier New'
       );
 
-      this.renderPlacesImage(place, yCoordinate);
       this.renderPlacesMarker(place, yCoordinate);
       this.renderPlacesDates(place, yCoordinate);
 
@@ -299,20 +325,6 @@ export class StopComponent implements OnInit, AfterViewInit {
       );
       image.style.backgroundColor = this.currentTheme.color;
       this.helperCanvas.drawBitmap(image, 20, yCoordinate + 8, 0);
-    };
-  }
-
-  renderPlacesImage(place: { name: string, type: string }, yCoordinate: number) {
-    const image = document.createElement('img');
-    image.src = 'http://lorempixel.com/30/30/city/?id=' + Math.random();
-
-    // image.height = 1;
-    // image.width = 1;
-
-    image.onload = () => {
-      this.helperCanvas.drawBitmap(
-        image, 60, yCoordinate + 10, 0
-      );
     };
   }
 
