@@ -1,0 +1,33 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  position: relative;
+}
+
+.body {
+  position: relative;
+
+  width: 100%;
+  margin-bottom: -4px;
+}
+
+.buttons {
+  position: absolute;
+  z-index: 1;
+}
+
+.edit-delete {
+  display: inline-block;
+
+  margin-left: 500px;
+  margin-top: 70px;
+  right: 0;
+}
+
+.edit-delete:hover {
+  cursor: pointer;
+}

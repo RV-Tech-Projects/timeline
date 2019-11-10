@@ -1,0 +1,40 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.body {
+  width: 100%;
+  border: 1px solid black;
+  height: 700px;
+  box-sizing: border-box;
+}
+
+.container {
+  position: relative;
+
+  width: 80%;
+  height: 100%;
+  margin: auto;
+
+  border: 1px solid red;
+  box-sizing: border-box;
+}
+
+app-stop-adder,
+app-timeline-container {
+  position: absolute;
+
+  width: 50%;
+  height: 100%;
+  border: 1px solid yellow;
+  box-sizing: border-box;
+}
+
+app-stop-adder {
+  right: 0;
+}
+
+app-timeline-container {
+  left: 0;
+}

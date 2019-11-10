@@ -1,0 +1,32 @@
+<div class="container">
+
+  <div class="buttons">
+    <div
+      class="edit-delete"
+      [ngStyle]="{
+        color: buttons.deleteHover ? 'rgb(157, 0, 0)' : currentTheme.color
+      }"
+      (mouseover)="buttons.deleteHover=true"
+      (mouseleave)="buttons.deleteHover=false"
+      (click)="editOrRemoveStop()"
+    >
+      <i
+        class="fa fa-2x"
+        [ngClass]="{
+          'fa-pencil': stopType !== 'stop',
+          'fa-trash': stopType === 'stop'
+        }"
+      ></i>
+    </div>
+  </div>
+
+  <canvas
+      class="body"
+      height="90"
+      #stop
+    >
+    Sorry, the timeline can't be displayed.
+    Your device doesn't support canvas rendering.
+  </canvas>
+
+</div>
